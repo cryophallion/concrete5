@@ -19,7 +19,6 @@ abstract class Control extends Object
     protected $ptComposerControl;
     protected $ptComposerControlRequiredByDefault = false;
     protected $ptComposerControlRequiredOnThisRequest = false;
-    protected $ptComposerControlCustomLabel;
 
     abstract public function getPageTypeComposerControlCustomTemplates();
     abstract public function render($label, $customTemplate, $description);
@@ -47,22 +46,11 @@ abstract class Control extends Object
         $this->ptComposerControlRequiredOnThisRequest = $req;
     }
 
-    
-    public function setPageTypeComposerControlCustomLabel($label)
-    {
-        $this->ptComposerControlCustomLabel = $label;
-    }
-    
-    public function getPageTypeComposerControlCustomLabel()
-    {
-        return $this->ptComposerControlCustomLabel;
-    }
-
     public function setPageObject($page)
     {
         $this->page = $page;
     }
-    
+
     public function getPageObject()
     {
         return $this->page;
@@ -170,9 +158,8 @@ abstract class Control extends Object
             $ptComposerFormLayoutSetControlRequired = 1;
         }
         $controlType = $this->getPageTypeComposerControlTypeObject();
-        $customLabel = $this->getPageTypeComposerControlCustomLabel();
-        $db->Execute('insert into PageTypeComposerFormLayoutSetControls (ptComposerFormLayoutSetID, ptComposerControlTypeID, ptComposerControlObject, ptComposerFormLayoutSetControlDisplayOrder, ptComposerFormLayoutSetControlCustomLabel, ptComposerFormLayoutSetControlRequired) values (?, ?, ?, ?, ?, ?)', array(
-            $set->getPageTypeComposerFormLayoutSetID(), $controlType->getPageTypeComposerControlTypeID(), serialize($this), $displayOrder, $customLabel, $ptComposerFormLayoutSetControlRequired,
+        $db->Execute('insert into PageTypeComposerFormLayoutSetControls (ptComposerFormLayoutSetID, ptComposerControlTypeID, ptComposerControlObject, ptComposerFormLayoutSetControlDisplayOrder, ptComposerFormLayoutSetControlRequired) values (?, ?, ?, ?, ?)', array(
+            $set->getPageTypeComposerFormLayoutSetID(), $controlType->getPageTypeComposerControlTypeID(), serialize($this), $displayOrder, $ptComposerFormLayoutSetControlRequired,
         ));
 
         return PageTypeComposerFormLayoutSetControl::getByID($db->Insert_ID());
